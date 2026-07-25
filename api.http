@@ -1,0 +1,40 @@
+# Vinyl Catalog API - local dev requests
+#
+# Run these directly from your editor:
+#   - VS Code: install the "REST Client" extension, then click "Send Request"
+#   - JetBrains IDEs: built-in HTTP Client, click the green arrow
+#
+# Start the API first: pnpm dev
+
+@baseUrl = http://localhost:3333
+
+### Create a product
+# Body: title (required, 1-255), artist (required, 1-255), releaseYear (optional, 1900-2100)
+# -> 201 with the created product
+POST {{baseUrl}}/products
+Content-Type: application/json
+
+{
+  "title": "Thriller",
+  "artist": "Michael Jackson",
+  "releaseYear": 1982
+}
+
+### List products (paginated)
+# Query: page (default 1), perPage (default 20, max 100)
+# -> 200 with an array
+GET {{baseUrl}}/products?page=1&perPage=20
+
+### Get a product by id
+# -> 200 with the product, or 404 if it does not exist
+GET {{baseUrl}}/products/1
+
+### Validation error example
+# Empty title -> 422 with validation messages
+POST {{baseUrl}}/products
+Content-Type: application/json
+
+{
+  "title": "",
+  "artist": "X"
+}
