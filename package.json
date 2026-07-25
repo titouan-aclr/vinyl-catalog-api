@@ -50,6 +50,8 @@
   },
   "dependencies": {
     "@adonisjs/core": "^6.18.0",
+    "kysely": "^0.29.4",
+    "mysql2": "^3.23.1",
     "reflect-metadata": "^0.2.2"
   },
   "hotHook": {
