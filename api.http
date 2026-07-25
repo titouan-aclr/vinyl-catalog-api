@@ -5,8 +5,13 @@
 #   - JetBrains IDEs: built-in HTTP Client, click the green arrow
 #
 # Start the API first: pnpm dev
+# After creating a product/variant, set @productId / @variantId below to their ids.
 
 @baseUrl = http://localhost:3333
+@productId = 1
+@variantId = 1
+
+### =========================  Products  =========================
 
 ### Create a product
 # Body: title (required, 1-255), artist (required, 1-255), releaseYear (optional, 1900-2100)
@@ -27,7 +32,7 @@ GET {{baseUrl}}/products?page=1&perPage=20
 
 ### Get a product by id
 # -> 200 with the product, or 404 if it does not exist
-GET {{baseUrl}}/products/1
+GET {{baseUrl}}/products/{{productId}}
 
 ### Validation error example
 # Empty title -> 422 with validation messages
@@ -37,4 +42,50 @@ Content-Type: application/json
 {
   "title": "",
   "artist": "X"
+}
+
+### =========================  Variants  =========================
+
+### Create a variant for a product
+# Body: sku (required, unique, 1-64), format (LP|EP|SINGLE|CD|CASSETTE),
+#       priceCents (required, integer >= 0), currency (3 letters, e.g. EUR),
+#       color/stock/status optional (status: draft|available|sold_out, default draft)
+# -> 201 with the created variant; 409 if the sku already exists; 404 if the product is missing
+POST {{baseUrl}}/products/{{productId}}/variants
+Content-Type: application/json
+
+{
+  "sku": "MJ-THRILLER-LP-RED",
+  "format": "LP",
+  "color": "Red",
+  "priceCents": 2999,
+  "currency": "EUR",
+  "stock": 10,
+  "status": "available"
+}
+
+### List variants of a product
+# -> 200 with an array, or 404 if the product does not exist
+GET {{baseUrl}}/products/{{productId}}/variants
+
+### Adjust stock (transactional)
+# Body: delta (integer) - negative for a sale, positive for a restock
+# -> 200 with the updated variant
+#    422 if it would make the stock negative (oversell)
+#    404 if the variant does not exist
+# Side effect: status -> sold_out at 0, -> available above 0 (a draft variant stays draft)
+PATCH {{baseUrl}}/variants/{{variantId}}/stock
+Content-Type: application/json
+
+{
+  "delta": -1
+}
+
+### Oversell example
+# A delta larger than the current stock -> 422
+PATCH {{baseUrl}}/variants/{{variantId}}/stock
+Content-Type: application/json
+
+{
+  "delta": -99999
 }
