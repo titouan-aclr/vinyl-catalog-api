@@ -11,3 +11,5 @@ router
     router.post('/', [VariantsController, 'store'])
   })
   .prefix('/products/:productId/variants')
+
+router.patch('/variants/:id/stock', [VariantsController, 'updateStock'])

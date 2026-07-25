@@ -9,3 +9,7 @@ export const createVariantValidator = vine.create({
   stock: vine.number().withoutDecimals().min(0).optional(),
   status: vine.enum(['draft', 'available', 'sold_out']).optional(),
 })
+
+export const updateStockValidator = vine.create({
+  delta: vine.number().withoutDecimals(),
+})

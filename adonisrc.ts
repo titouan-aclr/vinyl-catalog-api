@@ -46,6 +46,7 @@ export default defineConfig({
     },
     () => import('#providers/database_provider'),
     () => import('#providers/repositories_provider'),
+    () => import('#providers/services_provider'),
   ],
 
   /*
