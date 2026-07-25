@@ -1,0 +1,38 @@
+# =============================================================================
+# vinyl-catalog-api - Docker Compose for Development
+# =============================================================================
+#
+# This compose file provides only the MySQL database for local development.
+# The AdonisJS app runs directly via `pnpm dev`.
+#
+# Usage:
+#   docker compose -f docker-compose.dev.yml up -d
+#
+# Connection variables for .env (see .env.example):
+#   DB_HOST=127.0.0.1  DB_PORT=3306  DB_USER=vinyl
+#   DB_PASSWORD=password  DB_DATABASE=vinyl_catalog
+#
+# =============================================================================
+
+services:
+  mysql:
+    image: mysql:8.4
+    container_name: vinyl-catalog-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: vinyl_catalog
+      MYSQL_USER: vinyl
+      MYSQL_PASSWORD: password
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-ppassword"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  mysql_data:
