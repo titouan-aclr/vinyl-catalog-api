@@ -44,6 +44,7 @@ export default defineConfig({
       environment: ['repl', 'test'],
     },
     () => import('#providers/database_provider'),
+    () => import('#providers/repositories_provider'),
   ],
 
   /*
