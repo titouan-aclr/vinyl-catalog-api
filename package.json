@@ -17,6 +17,7 @@
     "#controllers/*": "./app/controllers/*.js",
     "#exceptions/*": "./app/exceptions/*.js",
     "#models/*": "./app/models/*.js",
+    "#repositories/*": "./app/repositories/*.js",
     "#mails/*": "./app/mails/*.js",
     "#services/*": "./app/services/*.js",
     "#listeners/*": "./app/listeners/*.js",
@@ -50,6 +51,7 @@
   },
   "dependencies": {
     "@adonisjs/core": "^6.18.0",
+    "@vinejs/vine": "^4.4.0",
     "kysely": "^0.29.4",
     "mysql2": "^3.23.1",
     "reflect-metadata": "^0.2.2"
